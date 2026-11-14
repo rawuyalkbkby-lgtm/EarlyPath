@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="html-root">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EarlyPath | درب الكشف المبكر</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ivory: '#F7F1E8',
+                        rose: '#D9AFA5',
+                        deepSage: '#55766D',
+                        sage: '#A9B8A0',
+                        charcoal: '#554A45',
+                        beige: '#E8D8C5'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Cairo', 'Plus Jakarta Sans', sans-serif; background-color: #F7F1E8; color: #554A45; }
+        .card-container { background-color: #FFFFFF; border: 1.5px solid #E8D8C5; border-radius: 24px; box-shadow: 0 8px 30px rgba(85, 74, 69, 0.05); }
+        .btn-primary { background-color: #55766D; color: #FFFFFF; transition: all 0.2s; cursor: pointer; }
+        .btn-primary:hover { background-color: #435e57; transform: translateY(-1px); }
+        .btn-beige { background-color: #E8D8C5; color: #554A45; transition: all 0.2s; cursor: pointer; }
+        .btn-beige:hover { background-color: #dcc6ac; }
+        .hidden { display: none !important; }
+        .custom-checkbox:checked { accent-color: #55766D; }
+        .custom-radio:checked { accent-color: #55766D; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-md border-b border-beige sticky top-0 z-40">
+        <div class="max-w-4xl mx-auto px-5 py-4 flex justify-between items-center">
+            <div onclick="goHome()" class="flex items-center gap-3 cursor-pointer">
+                <div class="w-10 h-10 rounded-full bg-ivory border border-beige flex items-center justify-center text-xl">🌿</div>
+                <div>
+                    <h1 class="text-lg font-extrabold text-deepSage leading-none">EarlyPath</h1>
+                    <p id="header-sub" class="text-[11px] font-semibold text-charcoal/80">درب الكشف المبكر</p>
+                </div>
+            </div>
+            <button type="button" onclick="goHome()" id="lang-switch-btn" class="text-xs font-bold px-3 py-1.5 rounded-full bg-beige/60 text-charcoal hover:bg-beige transition cursor-pointer">
+                🌐 تغيير اللغة / Language
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-2xl w-full mx-auto px-4 py-8 flex-grow flex flex-col justify-center">
+
+        <!-- 1. SCREEN: WELCOME & LANGUAGE SELECTION -->
+        <section id="screen-lang" class="card-container p-8 md:p-12 text-center space-y-6">
+            <div class="w-20 h-20 mx-auto rounded-full bg-ivory border-2 border-beige flex items-center justify-center text-4xl shadow-inner">
+                🧬
+            </div>
+            <div class="space-y-2">
+                <h1 class="text-3xl md:text-4xl font-extrabold text-deepSage tracking-tight">EarlyPath</h1>
+                <h2 class="text-xl font-bold text-charcoal">درب الكشف المبكر</h2>
+            </div>
+            <div class="bg-ivory/80 border border-beige rounded-2xl p-4 space-y-1">
+                <p class="font-bold text-deepSage text-base">كل خطوة مبكرة تصنع فرق</p>
+                <p class="font-semibold text-charcoal/80 text-sm">Every early step makes a difference</p>
+            </div>
+            <div class="pt-4 space-y-3">
+                <p class="text-sm font-bold text-charcoal">اختر اللغة المفضلة / Choose Preferred Language</p>
+                <div class="grid grid-cols-2 gap-4 max-w-md mx-auto">
+                    <button type="button" onclick="setLanguage('ar')" class="btn-primary py-4 px-6 rounded-2xl font-bold text-lg shadow-sm">
+                        العربية
+                    </button>
+                    <button type="button" onclick="setLanguage('en')" class="btn-beige py-4 px-6 rounded-2xl font-bold text-lg shadow-sm">
+                        English
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. SCREEN: SELECT SCREENING TYPE -->
+        <section id="screen-type" class="card-container p-6 md:p-10 space-y-6 hidden">
+            <div class="text-center space-y-2">
+                <h2 id="txt-select-title" class="text-2xl font-extrabold text-deepSage">اختيار نوع الفحص</h2>
+                <p id="txt-select-sub" class="text-sm text-charcoal/80">يرجى اختيار المسار الصحي الذي ترغب في تقييمه</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
+                <!-- Breast Cancer Card -->
+                <div onclick="selectCancer('breast')" class="border-2 border-rose bg-rose/10 hover:bg-rose/20 rounded-2xl p-6 cursor-pointer transition flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-rose/30 flex items-center justify-center text-2xl mb-4">🎗️</div>
+                        <h3 id="txt-bc-title" class="text-xl font-extrabold text-charcoal">سرطان الثدي</h3>
+                        <p id="txt-bc-desc" class="text-xs text-charcoal/80 mt-2 leading-relaxed">تقييم الأعراض وعوامل الخطورة والأهلية لفحص الماموجرام (Mammography)</p>
+                    </div>
+                    <div class="mt-5 text-xs font-bold text-deepSage flex items-center gap-1">
+                        <span id="txt-start-1">ابدأ التقييم</span> <span>←</span>
+                    </div>
+                </div>
+
+                <!-- Colorectal Cancer Card -->
+                <div onclick="selectCancer('colorectal')" class="border-2 border-sage bg-sage/15 hover:bg-sage/25 rounded-2xl p-6 cursor-pointer transition flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-sage/30 flex items-center justify-center text-2xl mb-4">🩺</div>
+                        <h3 id="txt-crc-title" class="text-xl font-extrabold text-charcoal">سرطان القولون والمستقيم</h3>
+                        <p id="txt-crc-desc" class="text-xs text-charcoal/80 mt-2 leading-relaxed">تقييم الأعراض والتاريخ العائلي وفحص الدم الخفي (FIT) والمنظار</p>
+                    </div>
+                    <div class="mt-5 text-xs font-bold text-deepSage flex items-center gap-1">
+                        <span id="txt-start-2">ابدأ التقييم</span> <span>←</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. SCREEN: INITIAL SYMPTOM QUESTION (YES / NO) -->
+        <section id="screen-symp-q1" class="card-container p-6 md:p-10 space-y-6 hidden">
+            <span id="symp-q1-badge" class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-ivory border border-beige text-deepSage"></span>
+            <h2 id="symp-q1-text" class="text-xl md:text-2xl font-extrabold text-charcoal leading-relaxed"></h2>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+                <button type="button" onclick="handleSympQ1(true)" id="btn-symp-yes" class="p-5 rounded-2xl border-2 border-beige hover:border-deepSage bg-ivory/50 hover:bg-ivory font-bold text-lg text-charcoal transition cursor-pointer">
+                    نعم
+                </button>
+                <button type="button" onclick="handleSympQ1(false)" id="btn-symp-no" class="p-5 rounded-2xl border-2 border-beige hover:border-deepSage bg-ivory/50 hover:bg-ivory font-bold text-lg text-charcoal transition cursor-pointer">
+                    لا
+                </button>
+            </div>
+        </section>
+
+        <!-- 4. SCREEN: MULTIPLE CHOICE SYMPTOMS -->
+        <section id="screen-symp-list" class="card-container p-6 md:p-8 space-y-6 hidden">
+            <div>
+                <span id="symp-list-badge" class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-rose/20 text-charcoal mb-2"></span>
+                <h2 id="symp-list-title" class="text-xl font-extrabold text-deepSage"></h2>
+                <p id="symp-list-sub" class="text-xs text-charcoal/70 mt-1"></p>
+            </div>
+
+            <div id="symp-checkboxes" class="space-y-3"></div>
+
+            <div class="pt-4 flex gap-3">
+                <button type="button" onclick="backToSympQ1()" id="btn-back-1" class="btn-beige px-5 py-3 rounded-xl font-bold text-sm">رجوع</button>
+                <button type="button" onclick="submitSymptomsList()" id="btn-continue-symp" class="btn-primary flex-1 py-3 rounded-xl font-bold text-base">متابعة</button>
+            </div>
+        </section>
+
+        <!-- 5. SCREEN: SYMPTOM MEDICAL GUIDANCE -->
+        <section id="screen-symp-guidance" class="card-container p-6 md:p-8 space-y-6 hidden">
+            <div class="text-center space-y-3">
+                <div class="w-16 h-16 mx-auto rounded-full bg-rose/25 text-3xl flex items-center justify-center">⚠️</div>
+                <h2 id="guid-title" class="text-2xl font-extrabold text-deepSage"></h2>
+                <p id="guid-desc" class="text-sm md:text-base text-charcoal leading-8 bg-ivory p-5 rounded-2xl border border-beige"></p>
+            </div>
+
+            <div class="space-y-3 pt-2">
+                <!-- Nearby Centers Button -->
+                <button type="button" onclick="askLocationPermission()" id="btn-guid-centers" class="btn-primary w-full py-4 px-5 rounded-2xl font-bold flex items-center justify-center gap-2 shadow-sm">
+                    📍 المراكز القريبة للتقييم الطبي
+                </button>
+
+                <!-- Educational Video Button -->
+                <button type="button" onclick="openVideoModal()" id="btn-guid-video" class="btn-beige w-full py-3.5 px-5 rounded-2xl font-bold flex items-center justify-center gap-2">
+                    🎥 تعرف على الأعراض والفحص (فيديو توعوي)
+                </button>
+
+                <!-- Colorectal Emergency Button (Only shown for Colorectal) -->
+                <button type="button" onclick="openEmergencyModal()" id="btn-guid-emergency" class="hidden w-full py-3.5 px-5 rounded-2xl font-bold bg-red-600 hover:bg-red-700 text-white flex items-center justify-center gap-2 shadow-sm transition cursor-pointer">
+                    🚨 تنبيه للحالات الطارئة
+                </button>
+            </div>
+
+            <button type="button" onclick="goHome()" id="btn-guid-home" class="block mx-auto text-xs font-bold underline text-charcoal/60 pt-2 cursor-pointer">العودة للبداية</button>
+        </section>
+
+        <!-- 6. SCREEN: ELIGIBILITY QUESTIONNAIRE (NO SYMPTOMS PATH) -->
+        <section id="screen-eligibility" class="card-container p-6 md:p-8 space-y-6 hidden">
+            <div class="border-b border-beige pb-4">
+                <span id="elig-badge" class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-sage/30 text-deepSage mb-2"></span>
+                <h2 id="elig-title" class="text-xl font-extrabold text-deepSage"></h2>
+                <p id="elig-sub" class="text-xs text-charcoal/70 mt-1"></p>
+            </div>
+
+            <div id="elig-questions-body" class="space-y-6"></div>
+
+            <div class="pt-4 flex gap-3 border-t border-beige">
+                <button type="button" onclick="backToSympQ1()" id="btn-back-2" class="btn-beige px-5 py-3 rounded-xl font-bold text-sm">رجوع</button>
+                <button type="button" onclick="evaluateEligibility()" id="btn-show-result" class="btn-primary flex-1 py-3 rounded-xl font-bold text-base">عرض نتيجة التقييم</button>
+            </div>
+        </section>
+
+        <!-- 7. SCREEN: FINAL EVALUATION RESULT (3 OUTCOMES) -->
+        <section id="screen-final-result" class="card-container p-6 md:p-8 space-y-6 hidden">
+            <div class="text-center space-y-3">
+                <div id="res-icon" class="w-16 h-16 mx-auto rounded-full bg-ivory border border-beige text-3xl flex items-center justify-center"></div>
+                <h2 id="res-title" class="text-2xl font-extrabold text-deepSage"></h2>
+                <p id="res-desc" class="text-sm md:text-base text-charcoal leading-8 bg-ivory p-5 rounded-2xl border border-beige"></p>
+            </div>
+
+            <div id="res-actions" class="space-y-3 pt-2">
+                <!-- Dynamic buttons based on outcome -->
+            </div>
+
+            <button type="button" onclick="goHome()" id="btn-res-home" class="block mx-auto text-xs font-bold underline text-charcoal/60 pt-2 cursor-pointer">العودة للصفحة الرئيسية</button>
+        </section>
+
+    </main>
+
+    <!-- MODAL 1: LOCATION PERMISSION -->
+    <div id="modal-location" class="hidden fixed inset-0 bg-charcoal/60 backdrop-blur-xs flex items-center justify-center p-4 z-50">
+        <div class="bg-white border-2 border-beige rounded-3xl p-6 max-w-sm w-full text-center space-y-4 shadow-2xl">
+            <div class="w-14 h-14 mx-auto rounded-full bg-ivory text-2xl flex items-center justify-center">📍</div>
+            <h3 id="loc-modal-title" class="text-lg font-extrabold text-deepSage">مشاركة الموقع الجغرافي</h3>
+            <p id="loc-modal-desc" class="text-sm text-charcoal leading-relaxed">
+                سيتم مشاركة موقعك الجغرافي الحالي لتحديد أقرب المستشفيات والمراكز الصحية إليك عبر خرائط جوجل. هل توافق؟
+            </p>
+            <div class="grid grid-cols-2 gap-3 pt-2">
+                <button type="button" onclick="closeModal('modal-location')" id="btn-loc-cancel" class="btn-beige py-2.5 rounded-xl font-bold text-sm">إلغاء</button>
+                <button type="button" onclick="confirmLocationAndMap()" id="btn-loc-ok" class="btn-primary py-2.5 rounded-xl font-bold text-sm">موافق</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: EDUCATIONAL VIDEO -->
+    <div id="modal-video" class="hidden fixed inset-0 bg-charcoal/60 backdrop-blur-xs flex items-center justify-center p-4 z-50">
+        <div class="bg-white border-2 border-beige rounded-3xl p-6 max-w-md w-full text-center space-y-4 shadow-2xl">
+            <div class="w-14 h-14 mx-auto rounded-full bg-ivory text-2xl flex items-center justify-center">🎥</div>
+            <h3 id="vid-modal-title" class="text-lg font-extrabold text-deepSage"></h3>
+            <p id="vid-modal-desc" class="text-sm text-charcoal leading-relaxed"></p>
+            <div class="bg-ivory p-4 rounded-2xl border border-beige space-y-3">
+                <a id="vid-modal-link" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary block w-full py-3 rounded-xl font-bold text-sm shadow-sm">
+                    ▶️ مشاهدة الفيديو التوعوي على يوتيوب
+                </a>
+                <p id="vid-modal-source" class="text-[11px] text-charcoal/70 font-semibold break-all"></p>
+            </div>
+            <button type="button" onclick="closeModal('modal-video')" id="btn-vid-close" class="btn-beige w-full py-2.5 rounded-xl font-bold text-sm">إغلاق</button>
+        </div>
+    </div>
+
+    <!-- MODAL 3: EMERGENCY ALERT (COLORECTAL) -->
+    <div id="modal-emergency" class="hidden fixed inset-0 bg-charcoal/70 backdrop-blur-xs flex items-center justify-center p-4 z-50">
+        <div class="bg-white border-2 border-red-500 rounded-3xl p-6 max-w-md w-full text-center space-y-4 shadow-2xl">
+            <div class="w-14 h-14 mx-auto rounded-full bg-red-100 text-red-600 text-3xl flex items-center justify-center">🚨</div>
+            <h3 id="emg-modal-title" class="text-xl font-extrabold text-red-600">تنبيه للحالات الطارئة</h3>
+            <p id="emg-modal-desc" class="text-sm text-charcoal leading-7 bg-red-50 p-4 rounded-2xl border border-red-200 font-semibold">
+                إذا كان لديك نزيف شديد، أو دوخة شديدة أو إغماء، أو ألم شديد بالبطن مصحوب بقيء وانتفاخ وعدم القدرة على إخراج الغازات أو البراز، فتوجه إلى الطوارئ فوراً.
+            </p>
+            <a href="tel:997" class="block w-full py-3.5 rounded-xl font-extrabold text-white bg-red-600 hover:bg-red-700 text-base shadow-md transition">
+                📞 <span id="emg-call-txt">اتصال بالطوارئ (الهلال الأحمر السعودي: 997)</span>
+            </a>
+            <button type="button" onclick="closeModal('modal-emergency')" id="btn-emg-close" class="btn-beige w-full py-2.5 rounded-xl font-bold text-sm">إغلاق</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white/60 border-t border-beige py-4 text-center text-xs text-charcoal/70">
+        EarlyPath | درب الكشف المبكر — MEDATHON 2026
+    </footer>
+
+    <script>
+        // ==========================================
+        // STATE & TRANSLATIONS
+        // ==========================================
+        let lang = 'ar';
+        let cancerType = ''; // 'breast' | 'colorectal'
+
+        const RELATIVES_AR = ['الأم', 'الأخت', 'الابنة', 'الجدة', 'العمة', 'الخالة', 'قريبة أخرى'];
+        const RELATIVES_EN = ['Mother', 'Sister', 'Daughter', 'Grandmother', 'Paternal Aunt', 'Maternal Aunt', 'Other Relative'];
+
+        const I18N = {
+            ar: {
+                headerSub: 'درب الكشف المبكر',
+                langBtn: '🌐 English',
+                selectTitle: 'اختيار نوع الفحص',
+                selectSub: 'يرجى تحديد نوع الفحص الذي ترغب في التحقق من أهليتك له',
+                bcTitle: 'سرطان الثدي',
+                bcDesc: 'تقييم الأعراض وعوامل الخطورة والأهلية لفحص الماموجرام (Mammography)',
+                crcTitle: 'سرطان القولون والمستقيم',
+                crcDesc: 'تقييم الأعراض والتاريخ العائلي وفحص الدم الخفي (FIT) والمنظار',
+                start: 'ابدأ التقييم',
+                yes: 'نعم',
+                no: 'لا',
+                dontKnow: 'لا أعلم',
+                dontRemember: 'لا أتذكر',
+                back: 'رجوع',
+                cont: 'متابعة',
+                home: 'العودة للصفحة الرئيسية',
+                showRes: 'عرض نتيجة التقييم',
+                // Breast Symp
+                bcSympQ1: 'هل تشعر حالياً بأي تغيرات أو أعراض في الثدي؟',
+                bcSympListTitle: 'ما الأعراض التي تعاني منها حالياً؟',
+                bcSympListSub: 'يمكنك اختيار أكثر من عرض (اختيار من متعدد)',
+                bcSymptoms: [
+                    'وجود كتل في الثدي أو تحت الإبط',
+                    'إفرازات غير طبيعية من الحلمة',
+                    'تغير في شكل الثدي أو حجمه أو جلده',
+                    'ألم مستمر وغير معتاد في الثدي'
+                ],
+                bcGuidTitle: 'توجيه طبي',
+                bcGuidDesc: 'نوصيك بمراجعة الطبيب لتقييم الأعراض. هذه الأعراض لا تعني بالضرورة وجود سرطان، لكنها تستدعي تقييماً طبياً، ولا ينبغي الاكتفاء بأداة تحديد أهلية الفحص الدوري.',
+                // CRC Symp
+                crcSympQ1: 'هل تعاني حالياً من أي أعراض أو تغيرات في الإخراج؟',
+                crcSympListTitle: 'ما الأعراض التي تعاني منها؟',
+                crcSympListSub: 'يمكنك اختيار أكثر من عرض (اختيار من متعدد)',
+                crcSymptoms: [
+                    'وجود دم في البراز أو نزيف من المستقيم',
+                    'إمساك أو إسهال مستمر',
+                    'الشعور بعدم إفراغ الأمعاء بالكامل',
+                    'ألم أو تقلصات مستمرة في البطن',
+                    'انتفاخ مستمر وغير مفسر',
+                    'فقر دم غير مفسر',
+                    'فقدان الوزن دون سبب واضح',
+                    'فقدان الشهية أو التعب والضعف المستمر',
+                    'تغير مستمر في شكل البراز'
+                ],
+                crcGuidTitle: 'تحتاج إلى تقييم طبي',
+                crcGuidDesc: 'الأعراض التي حددتها تستدعي مراجعة الطبيب لتقييم حالتك ومعرفة سببها. لا تعني هذه الأعراض بالضرورة وجود سرطان، لكنها لا ينبغي أن تُهمل.',
+                // Buttons & Modals
+                nearbyBtn: '📍 المراكز القريبة للتقييم الطبي',
+                whereToScreenBtn: '📍 أين أفحص؟ (المراكز القريبة)',
+                knowSympBtn: '🎥 تعرف على الأعراض والفحص',
+                howScreenBtn: '🎥 كيف يتم الفحص؟ (معلومات توعوية)',
+                eduInfoBtn: '📚 معلومات توعوية',
+                emgBtn: '🚨 تنبيه للحالات الطارئة',
+                locTitle: 'مشاركة الموقع الجغرافي',
+                locDesc: 'سيتم مشاركة موقعك الجغرافي الحالي لنقلك إلى خرائط جوجل وتحديد أقرب المستشفيات والمراكز الصحية إليك. هل توافق؟',
+                locCancel: 'إلغاء',
+                locOk: 'موافق',
+                emgTitle: 'تنبيه للحالات الطارئة',
+                emgDesc: 'إذا كان لديك نزيف شديد، أو دوخة شديدة أو إغماء، أو ألم شديد بالبطن مصحوب بقيء وانتفاخ وعدم القدرة على إخراج الغازات أو البراز، فتوجه إلى الطوارئ فوراً.',
+                emgCall: 'اتصال بالطوارئ (الهلال الأحمر السعودي: 997)',
+                close: 'إغلاق',
+                // Results
+                resEligibleTitle: 'قد تكون ضمن الفئة الموصى لها بالفحص الدوري',
+                resEligibleDesc: 'بناءً على إجاباتك، قد تكون مؤهلاً للفحص الدوري وفق الإرشادات المعتمدة.',
+                resCustomTitle: 'تحتاج إلى خطة فحص مخصصة وتقييم طبي',
+                resCustomDesc: 'إجاباتك تشير إلى وجود عوامل خطورة تستدعي مراجعة الطبيب لتحديد نوع الفحص المناسب وتوقيته.',
+                resNotNeededTitle: 'لا تحتاج إلى الفحص الدوري حالياً وفق إجاباتك',
+                resNotNeededDesc: 'بناءً على المعلومات التي أدخلتها، لا تنطبق عليك حالياً معايير الفحص الدوري الموصى بها. يمكنك الاستفادة من مواد التوعية للتعرف على عوامل الخطورة وأهمية الكشف المبكر، وإعادة تقييم أهليتك عند بلوغ العمر الموصى به أو عند تغير عوامل الخطورة لديك.'
+            },
+            en: {
+                headerSub: 'Early Detection Pathway',
+                langBtn: '🌐 العربية',
+                selectTitle: 'Select Screening Type',
+                selectSub: 'Please select which screening pathway you would like to assess',
+                bcTitle: 'Breast Cancer',
+                bcDesc: 'Assess symptoms, risk factors, and eligibility for Mammography screening',
+                crcTitle: 'Colorectal Cancer',
+                crcDesc: 'Assess symptoms, family history, FIT test, and Colonoscopy eligibility',
+                start: 'Start Assessment',
+                yes: 'Yes',
+                no: 'No',
+                dontKnow: "I don't know",
+                dontRemember: "I don't remember",
+                back: 'Back',
+                cont: 'Continue',
+                home: 'Back to Home',
+                showRes: 'View Assessment Result',
+                // Breast Symp
+                bcSympQ1: 'Are you currently experiencing any breast changes or symptoms?',
+                bcSympListTitle: 'Which symptoms are you experiencing?',
+                bcSympListSub: 'You may select multiple symptoms',
+                bcSymptoms: [
+                    'Lump in the breast or underarm',
+                    'Abnormal nipple discharge',
+                    'Change in breast shape, size, or skin',
+                    'Persistent, unusual breast pain'
+                ],
+                bcGuidTitle: 'Medical Guidance Required',
+                bcGuidDesc: 'We recommend seeing a doctor to evaluate these symptoms. Having these symptoms does not necessarily mean cancer, but requires a clinical evaluation rather than routine screening tools.',
+                // CRC Symp
+                crcSympQ1: 'Are you currently experiencing any bowel changes or symptoms?',
+                crcSympListTitle: 'Which symptoms are you experiencing?',
+                crcSympListSub: 'You may select multiple symptoms',
+                crcSymptoms: [
+                    'Blood in stool or rectal bleeding',
+                    'Persistent constipation or diarrhea',
+                    'Feeling that the bowel does not empty completely',
+                    'Persistent abdominal pain or cramps',
+                    'Persistent unexplained bloating',
+                    'Unexplained iron-deficiency anemia',
+                    'Unexplained weight loss',
+                    'Persistent fatigue or loss of appetite',
+                    'Persistent change in stool shape'
+                ],
+                crcGuidTitle: 'Medical Evaluation Needed',
+                crcGuidDesc: 'The symptoms you selected require consulting a doctor to determine the cause. They do not necessarily mean cancer, but should not be ignored.',
+                // Buttons & Modals
+                nearbyBtn: '📍 Nearby Centers for Medical Evaluation',
+                whereToScreenBtn: '📍 Where to Screen? (Nearby Centers)',
+                knowSympBtn: '🎥 Learn About Symptoms & Screening',
+                howScreenBtn: '🎥 How is Screening Done? (Educational Video)',
+                eduInfoBtn: '📚 Educational Information',
+                emgBtn: '🚨 Emergency Warning',
+                locTitle: 'Share Your Location',
+                locDesc: 'Your current location will be shared to open Google Maps and find the nearest hospitals and health centers. Do you agree?',
+                locCancel: 'Cancel',
+                locOk: 'Agree',
+                emgTitle: 'Emergency Warning',
+                emgDesc: 'If you have severe bleeding, severe dizziness or fainting, or severe abdominal pain with vomiting, bloating, and inability to pass gas or stool, go to the emergency room immediately.',
+                emgCall: 'Call Emergency (Saudi Red Crescent: 997)',
+                close: 'Close',
+                // Results
+                resEligibleTitle: 'You May Be Eligible for Routine Screening',
+                resEligibleDesc: 'Based on your answers, you may be within the recommended group for routine screening according to approved guidelines.',
+                resCustomTitle: 'Personalized Screening Plan & Medical Review Needed',
+                resCustomDesc: 'Your answers indicate risk factors that require consulting a doctor to determine the appropriate screening test and schedule.',
+                resNotNeededTitle: 'Routine Screening Not Currently Indicated',
+                resNotNeededDesc: 'Based on the information entered, routine screening criteria do not currently apply to you. You can explore educational materials to learn about risk factors and early detection, and reassess when reaching the recommended age or if risk factors change.'
+            }
+        };
+
+        // ==========================================
+        // NAVIGATION & LANGUAGE
+        // ==========================================
+        function hideAll() {
+            ['screen-lang', 'screen-type', 'screen-symp-q1', 'screen-symp-list', 'screen-symp-guidance', 'screen-eligibility', 'screen-final-result'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+        }
+
+        function goHome() {
+            hideAll();
+            document.getElementById('screen-lang').classList.remove('hidden');
+        }
+
+        function setLanguage(selectedLang) {
+            lang = selectedLang;
+            const htmlRoot = document.getElementById('html-root');
+            htmlRoot.setAttribute('lang', lang);
+            htmlRoot.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+
+            const t = I18N[lang];
+            document.getElementById('header-sub').innerText = t.headerSub;
+            document.getElementById('lang-switch-btn').innerText = t.langBtn;
+            document.getElementById('txt-select-title').innerText = t.selectTitle;
+            document.getElementById('txt-select-sub').innerText = t.selectSub;
+            document.getElementById('txt-bc-title').innerText = t.bcTitle;
+            document.getElementById('txt-bc-desc').innerText = t.bcDesc;
+            document.getElementById('txt-crc-title').innerText = t.crcTitle;
+            document.getElementById('txt-crc-desc').innerText = t.crcDesc;
+            document.getElementById('txt-start-1').innerText = t.start;
+            document.getElementById('txt-start-2').innerText = t.start;
+
+            // Modal texts
+            document.getElementById('loc-modal-title').innerText = t.locTitle;
+            document.getElementById('loc-modal-desc').innerText = t.locDesc;
+            document.getElementById('btn-loc-cancel').innerText = t.locCancel;
+            document.getElementById('btn-loc-ok').innerText = t.locOk;
+            document.getElementById('emg-modal-title').innerText = t.emgTitle;
+            document.getElementById('emg-modal-desc').innerText = t.emgDesc;
+            document.getElementById('emg-call-txt').innerText = t.emgCall;
+            document.getElementById('btn-emg-close').innerText = t.close;
+            document.getElementById('btn-vid-close').innerText = t.close;
+
+            hideAll();
+            document.getElementById('screen-type').classList.remove('hidden');
+        }
+
+        // ==========================================
+        // PATH SELECTION & SYMPTOM FLOW
+        // ==========================================
+        function selectCancer(type) {
+            cancerType = type;
+            const t = I18N[lang];
+            hideAll();
+            document.getElementById('screen-symp-q1').classList.remove('hidden');
+
+            document.getElementById('symp-q1-badge').innerText = type === 'breast' ? t.bcTitle : t.crcTitle;
+            document.getElementById('symp-q1-text').innerText = type === 'breast' ? t.bcSympQ1 : t.crcSympQ1;
+            document.getElementById('btn-symp-yes').innerText = t.yes;
+            document.getElementById('btn-symp-no').innerText = t.no;
+        }
+
+        function backToSympQ1() {
+            selectCancer(cancerType);
+        }
+
+        function handleSympQ1(hasSymptoms) {
+            const t = I18N[lang];
+            if (hasSymptoms) {
+                hideAll();
+                document.getElementById('screen-symp-list').classList.remove('hidden');
+                document.getElementById('symp-list-badge').innerText = cancerType === 'breast' ? t.bcTitle : t.crcTitle;
+                document.getElementById('symp-list-title').innerText = cancerType === 'breast' ? t.bcSympListTitle : t.crcSympListTitle;
+                document.getElementById('symp-list-sub').innerText = cancerType === 'breast' ? t.bcSympListSub : t.crcSympListSub;
+                document.getElementById('btn-back-1').innerText = t.back;
+                document.getElementById('btn-continue-symp').innerText = t.cont;
+
+                const list = cancerType === 'breast' ? t.bcSymptoms : t.crcSymptoms;
+                document.getElementById('symp-checkboxes').innerHTML = list.map((symp, idx) => `
+                    <label class="flex items-center gap-3 p-4 rounded-xl border border-beige bg-ivory/40 hover:bg-ivory cursor-pointer transition">
+                        <input type="checkbox" name="symptom_item" value="${idx}" class="w-5 h-5 custom-checkbox">
+                        <span class="text-sm font-bold text-charcoal">${symp}</span>
+                    </label>
+                `).join('');
+            } else {
+                buildEligibilityForm();
+            }
+        }
+
+        function submitSymptomsList() {
+            const checked = document.querySelectorAll('input[name="symptom_item"]:checked');
+            if (checked.length === 0) {
+                alert(lang === 'ar' ? 'يرجى اختيار عرض واحد على الأقل للمتابعة' : 'Please select at least one symptom to continue');
+                return;
+            }
+
+            const t = I18N[lang];
+            hideAll();
+            document.getElementById('screen-symp-guidance').classList.remove('hidden');
+
+            document.getElementById('guid-title').innerText = cancerType === 'breast' ? t.bcGuidTitle : t.crcGuidTitle;
+            document.getElementById('guid-desc').innerText = cancerType === 'breast' ? t.bcGuidDesc : t.crcGuidDesc;
+            document.getElementById('btn-guid-centers').innerText = t.nearbyBtn;
+            document.getElementById('btn-guid-video').innerText = t.knowSympBtn;
+            document.getElementById('btn-guid-home').innerText = t.home;
+
+            const emgBtn = document.getElementById('btn-guid-emergency');
+            if (cancerType === 'colorectal') {
+                emgBtn.classList.remove('hidden');
+                emgBtn.innerText = t.emgBtn;
+            } else {
+                emgBtn.classList.add('hidden');
+            }
+        }
+
+        // ==========================================
+        // ELIGIBILITY QUESTIONNAIRE BUILDER
+        // ==========================================
+        function buildEligibilityForm() {
+            const t = I18N[lang];
+            hideAll();
+            document.getElementById('screen-eligibility').classList.remove('hidden');
+
+            document.getElementById('elig-badge').innerText = cancerType === 'breast' ? t.bcTitle : t.crcTitle;
+            document.getElementById('elig-title').innerText = lang === 'ar' ? 'أسئلة تقييم الأهلية للفحص' : 'Screening Eligibility Questions';
+            document.getElementById('elig-sub').innerText = lang === 'ar' ? 'يرجى الإجابة بدقة لتحديد التوصية المناسبة لك' : 'Please answer accurately to determine your recommendation';
+            document.getElementById('btn-back-2').innerText = t.back;
+            document.getElementById('btn-show-result').innerText = t.showRes;
+
+            const container = document.getElementById('elig-questions-body');
+
+            if (cancerType === 'breast') {
+                container.innerHTML = renderBreastQuestions();
+            } else {
+                container.innerHTML = renderColorectalQuestions();
+            }
+        }
+
+        // Helper to generate relative checkboxes + dynamic age at diagnosis
+        function renderRelativesBlock(prefix) {
+            const relList = lang === 'ar' ? RELATIVES_AR : RELATIVES_EN;
+            const ageOpts = lang === 'ar'
+                ? `<option value="">-- اختر العمر عند التشخيص --</option><option value="under50">أقل من 50 سنة</option><option value="50plus">50 سنة أو أكثر</option><option value="unknown">لا أعلم</option>`
+                : `<option value="">-- Select age at diagnosis --</option><option value="under50">Under 50 years</option><option value="50plus">50 years or older</option><option value="unknown">I don't know</option>`;
+
+            return `
+                <div id="${prefix}-relatives-box" class="hidden mt-4 p-4 rounded-2xl bg-ivory border border-beige space-y-4">
+                    <p class="font-bold text-sm text-deepSage">
+                        ${lang === 'ar' ? 'ما صلة قرابتك بالشخص المصاب؟ (يمكن اختيار أكثر من قريب)' : 'What is your relationship to the affected relative? (Select all that apply)'}
+                    </p>
+                    <div class="space-y-2">
+                        ${relList.map((rel, i) => `
+                            <div class="bg-white p-3 rounded-xl border border-beige/80">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" class="custom-checkbox w-4 h-4 ${prefix}-rel-chk" value="${i}" onchange="toggleRelativeDetails('${prefix}', ${i})">
+                                    <span class="text-sm font-bold">${rel}</span>
+                                </label>
+                                <div id="${prefix}-rel-detail-${i}" class="hidden mt-3 pt-2 border-t border-beige/60 space-y-2">
+                                    ${i === relList.length - 1 ? `
+                                        <input type="text" id="${prefix}-other-rel-name" placeholder="${lang === 'ar' ? 'اكتب اسم/صلة القريب (مثال: ابنة عم، ابنة خال...)' : 'Specify relative (e.g., cousin...)'}" class="w-full p-2.5 text-xs rounded-lg border border-beige bg-ivory/50">
+                                    ` : ''}
+                                    <label class="block text-xs font-semibold text-charcoal/80">
+                                        ${lang === 'ar' ? `كم كان عمر (${rel}) عند التشخيص؟` : `How old was (${rel}) at diagnosis?`}
+                                    </label>
+                                    <select id="${prefix}-rel-age-${i}" class="w-full p-2.5 text-xs rounded-lg border border-beige bg-ivory/50">
+                                        ${ageOpts}
+                                    </select>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function toggleRelativeDetails(prefix, idx) {
+            const chk = document.querySelector(`.${prefix}-rel-chk[value="${idx}"]`);
+            const detailBox = document.getElementById(`${prefix}-rel-detail-${idx}`);
+            if (chk && detailBox) {
+                detailBox.classList.toggle('hidden', !chk.checked);
+            }
+        }
+
+        // --- BREAST CANCER QUESTIONS ---
+        function renderBreastQuestions() {
+            const ar = lang === 'ar';
+            return `
+                <!-- Q0: Gender -->
+                <div class="p-4 rounded-2xl bg-ivory/40 border border-beige space-y-2">
+                    <label class="block font-bold text-sm">${ar ? '1. ما جنسك؟' : '1. What is your gender?'}</label>
+                    <select id="bc-gender" onchange="toggleBreastGenderFields()" class="w-full p-3 rounded-xl border border-beige bg-white text-sm">
+                        <option value="">${ar ? '-- اختر --' : '-- Select --'}</option>
+                        <option value="female">${ar ? 'أنثى' : 'Female'}</option>
+                        <option value="male">${ar ? 'ذكر' : 'Male'}</option>
+                    </select>
+                </div>
+
+                <!-- Q1: Age -->
+                <div class="p-4 rounded-2xl bg-ivory/40 border border-beige space-y-2">
+                    <label class="block font-bold text-sm">${ar ? '2. كم عمرك؟' : '2. How old are you?'}</label>
+                    <select id="bc-age" class="w-full p-3 rounded-xl border border-beige bg-white text-sm">
+                        <option value="">${ar ? '-- اختر العمر --' : '-- Select Age --'}</option>
+                        <option value="under30">${ar ? 'أقل من 30 سنة' : 'Under 30 years'}</option>
+                        <option value="30_39">${ar ? 'من 30 إلى 39 سنة' : '30 to 39 years'}</option>
+                        <option value="40plus">${ar ? '40 سنة أو أكثر' : '40 years or older'}</option>
+                    </select>
+                </div>
+
+                <!-- Q2: Family History -->
+                <div class="p-4 rounded-2xl bg-ivory/40 border border-beige space-y-2">
+                    <label class="block font-bold text-sm">${ar ? '3. هل يوجد تاريخ عائلي للإصابة بسرطان الثدي أو المبيض؟' : '3. Is there a family history of breast or ovarian cancer?'}</label>
+                    <select id="bc-fam" onchange="toggleBox('bc-relatives-box', this.value === 'yes')" class="w-full p-3 rounded-xl border border-beige bg-white text-sm">
+                        <option value="">${ar ? '-- اختر --' : '-- Select --'}</option>
+                        <option value="yes">${ar ? 'نعم' : 'Yes'}</option>
+                        <option value="no">${ar ? 'لا' : 'No'}</option>
+                        <option value="unknown">${ar ? 'لا أعلم' : "I don't know"}</option>
+                    </select>
+                    ${renderRelativesBlock('bc')}
+                </div>
+
+                <!-- Q3: Chest Radiation -->
+                <div class="p-4 rounded-2xl bg-ivory/40 border border-beige space-y-2">
+                    <label class="block font-bold text-sm">${ar ? '4. هل سبق أن تعرضت للعلاج الإشعاعي على منطقة الصدر بين عمر 10 و 30 سنة؟' : '4. Have you ever had radiation therapy to the chest area between ages 10 and 30?'}</label>
+                    <select id="bc-rad" class="w-full p-3 rounded-xl border border-beige bg-white text-sm">
+                        <option value="">${ar ? '-- اختر --' : '-- Select --'}</option>
+                        <option value="yes">${ar ? 'نعم' : 'Yes'}</option>
+                        <option value="no">${ar ? 'لا' : 'No'}</option>
+                        <option value="unknown">${ar ? 'لا أعلم' : "I don't know"}</option>
+                    </select>
+                </div>
+
+                <!-- Q4: Last Mammogram -->
+                <div class="p-4 rounded-2xl bg-ivory/40 border border-beige space-y-2">
+                    <label class="block font-bold text-sm">${ar ? '5. متى آخر مرة أجريت فحص الماموجرام (Mammography)؟' : '5. When was your last Mammography screening?'}</label>
+                    <select id="bc-mammo" class="w-full p-3 rounded-xl border border-beige bg-white text-sm">
+                        <option value="">${ar ? '-- اختر --' : '-- Select --'}</option>
+                        <option value="within23">${ar ? 'خلال آخر 23 شهر' : 'Within the last 23 months'}</option>
+                        <option value="23plus">${ar ? 'منذ 23 شهر أو أكثر' : '23 months ago or more'}</option>
+                        <option value="never">${ar ? 'لم أجرِ فحص من قبل' : 'Never had one before'}</option>
+                        <option value="unknown">${ar ? 'لا أتذكر' : "I don't remember"}</option>
+                    </select>
+                </div>
+
+                <!-- Female-Only Questions (Q5 & Q6) -->
+                <div id="bc-female-only" class="space-y-6">
+                    <!-- Q5: Pregnant / Breastfeeding -->
+                    <div class="p-4 rounded-2xl bg-rose/10 border border-rose/40 space-y-2">
+                        <label class="block font-bold text-sm">${ar ? '6. هل أنتِ حامل أو مرضع حالياً؟' : '6. Are you currently pregnant or breastfeeding?'}</label>
+                        <select id="bc-preg" class="w-full p-3 rounded-xl border border-beige bg-white text-sm">
+                            <option value="no">${ar ? 'لا' : 'No'}</option>
+                            <option value="yes">${ar ? 'نعم' : 'Yes'}</option>
+                        </select>
+                    </div>
+
+                    <!-- Q6: Implants / Surgery -->
+                    <div class="p-4 rounded-2xl bg-rose/10 border border-rose/40 space-y-2">
+                        <label class="block font-bold text-sm">${ar ? '7. هل لديكِ غرسات أو عمليات تجميلية سابقة في الثدي؟' : '7. Do you have breast implants or previous cosmetic breast surgery?'}</label>
+                        <select id="bc-implants" class="w-full p-3 rounded-xl border border-beige bg-white text-sm">
+                            <option value="no">${ar ? 'لا' : 'No'}</option>
+                            <option value="yes">${ar ? 'نعم' : 'Yes'}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Q7: Personal History -->
+                <div class="p-4 rounded-2xl bg-ivory/40 border border-beige space-y-2">
+                    <label class="block font-bold text-sm">${ar ? '8. هل سبق أن شُخصت بسرطان الثدي أو المبيض؟' : '8. Have you ever been diagnosed with breast or ovarian cancer?'}</label>
+                    <select id="bc-personal" class="w-full p-3 rounded-xl border border-beige bg-white text-sm">
+                        <option value="">${ar ? '-- اختر --' : '-- Select --'}</option>
+                        <option value="yes">${ar ? 'نعم' : 'Yes'}</option>
+                        <option value="no">${ar ? 'لا' : 'No'}</option>
+                        <option value="unknown">${ar ? 'لا أعلم' : "I don't know"}</option>
+                    </select>
+                </div>
+
+                <!-- Q8: Genetic Mutation -->
+                <div class="p-4 rounded-2xl bg-ivory/40 border border-beige space-y-2">
+                    <label class="block font-bold text-sm">${ar ? '9. هل سبق أن أُبلغت بوجود طفرة جينية مرتبطة بزيادة خطر الإصابة بسرطان الثدي مثل (BRCA1 أو BRCA2)؟' : '9. Have you ever been told you have a genetic mutation linked to increased breast cancer risk (such as BRCA1 or BRCA2)?'}</label>
+                    <select id="bc-gene" onchange="toggleBox('bc-gene-sub', this.value === 'yes')" class="w-full p-3 rounded-xl border border-beige bg-white text-sm">
+                        <option value="">${ar ? '-- اختر --' : '-- Select --'}</option>
+                        <option value="yes">${ar ? 'نعم' : 'Yes'}</option>
+                        <option value="no">${ar ? 'لا' : 'No'}</option>
+                        <option value="unknown">${ar ? 'لا أعلم' : "I don't know"}</option>
+                    </select>
+
+                    <!-- Conditional Sub-question for Q8 = Yes -->
+                    <div id="bc-gene-sub" class="hidden mt-3 p-3 rounded-xl bg-white border border-beige space-y-2">
+                        <label class="block text-xs font-bold text-deepSage">${ar ? 'هل تعرف اسم الطفرة الجينية؟' : 'Do you know the name of the genetic mutation?'}</label>
+                        <select id="bc-gene-name" class="w-full p-2.5 rounded-lg border border-beige bg-ivory/50 text-xs">
+                            <option value="BRCA1">BRCA1</option>
+                            <option value="BRCA2">BRCA2</option>
+                            <option value="PALB2">PALB2</option>
+                            <option value="TP53">TP53</option>
+                            <option value="other">${ar ? 'طفرة أخرى' : 'Other mutation'}</option>
+                            <option value="unknown">${ar ? 'لا أتذكر اسمها' : "I don't remember its name"}</option>
+                        </select>
+                    </div>
+                </div>
+            `;
+        }
+
+        function toggleBreastGenderFields() {
+            const gender = document.getElementById('bc-gender').value;
+            const femaleBox = document.getElementById('bc-female-only');
+            if (gender === 'male') {
+                femaleBox.classList.add('hidden');
+            } else {
+                femaleBox.classList.remove('hidden');
+            }
+        }
+
+        // --- COLORECTAL CANCER QUESTIONS ---
+        function renderColorectalQuestions() {
+            const ar = lang === 'ar';
+            return `
+                <!-- Q1: Gender -->
+                <div class="p-4 rounded-2xl bg-ivory/40 border border-beige space-y-2">
+                    <label class="block font-bold text-sm">${ar ? '1. ما جنسك؟' : '1. What is your gender?'}</label>
+                    <select id="crc-gender" class="w-full p-3 rounded-xl border border-beige bg-white text-sm">
+                        <option value="">${ar ? '-- اختر --' : '-- Select --'}</option>
+                        <option value="male">${ar ? 'ذكر' : 'Male'}</option>
+                        <option value="female">${ar ? 'أنثى' : 'Female'}</option>
+                    </select>
+                </div>
+
+                <!-- Q2: Age -->
+                <div class="p-4 rounded-2xl bg-ivory/40 border border-beige space-y-2">
+                    <label class="block font-bold text-sm">${ar ? '2. كم عمرك؟' : '2. How old are you?'}</label>
+                    <select id="crc-age" class="w-full p-3 rounded-xl border border-beige bg-white text-sm">
+                        <option value="">${ar ? '-- اختر العمر --' : '-- Select Age --'}</option>
+                        <option value="under40">${ar ? 'أقل من 40 سنة' : 'Under 40 years'}</option>
+                        <option value="40_75">${ar ? 'من 40 إلى 75 سنة' : '40 to 75 years'}</option>
+                        <option value="76_85">${ar ? 'من 76 إلى 85 سنة' : '76 to 85 years'}</option>
+                        <option value="85plus">${ar ? 'أكثر من 85 سنة' : 'Over 85 years'}</option>
+                    </select>
+                </div>
+
+                <!-- Q3: Family History -->
+                <div class="p-4 rounded-2xl bg-ivory/40 border border-beige space-y-2">
+                    <label class="block font-bold text-sm">${ar ? '3. هل يوجد تاريخ عائلي للإصابة بسرطان القولون والمستقيم أو الزوائد اللحمية (Polyps)؟' : '3. Is there a family history of colorectal cancer or polyps?'}</label>
+                    <select id="crc-fam" onchange="toggleBox('crc-relatives-box', this.value === 'yes')" class="w-full p-3 rounded-xl border border-beige bg-white text-sm">
+                        <option value="">${ar ? '-- اختر --' : '-- Select --'}</option>
+                        <option value="yes">${ar ? 'نعم' : 'Yes'}</option>
+                        <option value="no">${ar ? 'لا' : 'No'}</option>
+                        <option value="unknown">${ar ? 'لا أعلم' : "I don't know"}</option>
+                    </select>
+                    ${renderRelativesBlock('crc')}
+                </div>
+
+                <!-- Q4: Personal History of CRC or Polyps -->
+                <div class="p-4 rounded-2xl bg-ivory/40 border border-beige space-y-2">
+                    <label class="block font-bold text-sm">${ar ? '4. هل سبق أن أُصبت بسرطان القولون أو المستقيم أو أُزيلت منك الزوائد اللحمية (Polyps)؟' : '4. Have you ever had colorectal cancer or had polyps removed?'}</label>
+                    <select id="crc-personal" onchange="toggleBox('crc-personal-sub', this.value === 'yes')" class="w-full p-3 rounded-xl border border-beige bg-white text-sm">
+                        <option value="">${ar ? '-- اختر --' : '-- Select --'}</option>
+                        <option value="yes">${ar ? 'نعم' : 'Yes'}</option>
+                        <option value="no">${ar ? 'لا' : 'No'}</option>
+                        <option value="unknown">${ar ? 'لا أعلم' : "I don't know"}</option>
+                    </select>
+
+                    <!-- 3 Conditional Sub-Questions if Personal = Yes -->
+                    <div id="crc-personal-sub" class="hidden mt-3 p-4 rounded-xl bg-white border border-beige space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-deepSage mb-1">${ar ? '4.1 ما الحالة التي سبق حدوثها؟' : '4.1 Which condition occurred?'}</label>
+                            <select id="crc-pers-type" class="w-full p-2.5 rounded-lg border border-beige bg-ivory/50 text-xs">
+                                <option value="crc">${ar ? 'سرطان القولون والمستقيم' : 'Colorectal cancer'}</option>
+                                <option value="polyps">${ar ? 'إزالة الزوائد اللحمية' : 'Polyp removal'}</option>
+                                <option value="both">${ar ? 'كلاهما' : 'Both'}</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-deepSage mb-1">${ar ? '4.2 متى كان آخر إجراء متعلق بهذه الحالة؟' : '4.2 When was the last procedure related to this condition?'}</label>
+                            <select id="crc-pers-when" class="w-full p-2.5 rounded-lg border border-beige bg-ivory/50 text-xs">
+                                <option value="1yr">${ar ? 'خلال آخر سنة' : 'Within the last year'}</option>
+                                <option value="1_3yr">${ar ? 'منذ سنة إلى 3 سنوات' : '1 to 3 years ago'}</option>
+                                <option value="3_5yr">${ar ? 'منذ 3 سنوات إلى 5 سنوات' : '3 to 5 years ago'}</option>
+                                <option value="5plus">${ar ? 'منذ أكثر من 5 سنوات' : 'More than 5 years ago'}</option>
+                                <option value="unknown">${ar ? 'لا أتذكر' : "I don't remember"}</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-deepSage mb-1">${ar ? '4.3 هل لديك موعد متابعة أو خطة محددة من الطبيب؟' : '4.3 Do you have a follow-up appointment or specific plan from your doctor?'}</label>
+                            <select id="crc-pers-plan" class="w-full p-2.5 rounded-lg border border-beige bg-ivory/50 text-xs">
+                                <option value="yes">${ar ? 'نعم، لدي خطة متابعة' : 'Yes, I have a follow-up plan'}</option>
+                                <option value="no">${ar ? 'لا' : 'No'}</option>
+                                <option value="unknown">${ar ? 'لا أعلم' : "I don't know"}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q5: IBD -->
+                <div class="p-4 rounded-2xl bg-ivory/40 border border-beige space-y-2">
+                    <label class="block font-bold text-sm">${ar ? '5. هل تعاني من أحد أمراض الأمعاء الالتهابية المزمنة (IBD)؟' : '5. Do you suffer from a chronic Inflammatory Bowel Disease (IBD)?'}</label>
+                    <select id="crc-ibd" class="w-full p-3 rounded-xl border border-beige bg-white text-sm">
+                        <option value="">${ar ? '-- اختر --' : '-- Select --'}</option>
+                        <option value="uc">${ar ? 'التهاب القولون التقرحي (Ulcerative Colitis)' : 'Ulcerative Colitis'}</option>
+                        <option value="crohn">${ar ? 'داء كرون (Crohn’s Disease)' : 'Crohn’s Disease'}</option>
+                        <option value="no">${ar ? 'لا أعاني من أي منهما' : 'Neither'}</option>
+                        <option value="unknown">${ar ? 'لا أعلم' : "I don't know"}</option>
+                    </select>
+                </div>
+
+                <!-- Q6: Genetic Syndromes -->
+                <div class="p-4 rounded-2xl bg-ivory/40 border border-beige space-y-2">
+                    <label class="block font-bold text-sm">${ar ? '6. هل يوجد في عائلتك تاريخ للإصابة بأحد المتلازمات الوراثية التالية؟' : '6. Is there a family history of any of the following genetic syndromes?'}</label>
+                    <select id="crc-gene" class="w-full p-3 rounded-xl border border-beige bg-white text-sm">
+                        <option value="">${ar ? '-- اختر --' : '-- Select --'}</option>
+                        <option value="lynch">${ar ? 'متلازمة لينش (Lynch Syndrome)' : 'Lynch Syndrome'}</option>
+                        <option value="fap">${ar ? 'داء السلائل الغدي العائلي (Familial Adenomatous Polyposis - FAP)' : 'Familial Adenomatous Polyposis (FAP)'}</option>
+                        <option value="no">${ar ? 'لا' : 'No'}</option>
+                        <option value="unknown">${ar ? 'لا أعلم' : "I don't know"}</option>
+                    </select>
+                </div>
+
+                <!-- Q7: Childhood Radiation -->
+                <div class="p-4 rounded-2xl bg-ivory/40 border border-beige space-y-2">
+                    <label class="block font-bold text-sm">${ar ? '7. هل سبق أن تعرضت للعلاج الإشعاعي خلال مرحلة الطفولة؟' : '7. Have you ever received radiation therapy during childhood?'}</label>
+                    <select id="crc-rad" class="w-full p-3 rounded-xl border border-beige bg-white text-sm">
+                        <option value="">${ar ? '-- اختر --' : '-- Select --'}</option>
+                        <option value="yes">${ar ? 'نعم' : 'Yes'}</option>
+                        <option value="no">${ar ? 'لا' : 'No'}</option>
+                        <option value="unknown">${ar ? 'لا أعلم' : "I don't know"}</option>
+                    </select>
+                </div>
+
+                <!-- Q8: Previous Colonoscopy -->
+                <div class="p-4 rounded-2xl bg-ivory/40 border border-beige space-y-2">
+                    <label class="block font-bold text-sm">${ar ? '8. هل سبق أن أجريت منظار القولون (Colonoscopy)؟' : '8. Have you ever had a Colonoscopy?'}</label>
+                    <select id="crc-colo" onchange="toggleBox('crc-colo-sub', this.value === 'yes')" class="w-full p-3 rounded-xl border border-beige bg-white text-sm">
+                        <option value="">${ar ? '-- اختر --' : '-- Select --'}</option>
+                        <option value="yes">${ar ? 'نعم' : 'Yes'}</option>
+                        <option value="no">${ar ? 'لا' : 'No'}</option>
+                        <option value="unknown">${ar ? 'لا أتذكر' : "I don't remember"}</option>
+                    </select>
+
+                    <!-- Conditional Sub-question for Colonoscopy = Yes -->
+                    <div id="crc-colo-sub" class="hidden mt-3 p-3 rounded-xl bg-white border border-beige space-y-2">
+                        <label class="block text-xs font-bold text-deepSage">${ar ? 'متى آخر مرة أجريت المنظار (Colonoscopy)؟' : 'When was your last Colonoscopy?'}</label>
+                        <select id="crc-colo-when" class="w-full p-2.5 rounded-lg border border-beige bg-ivory/50 text-xs">
+                            <option value="within5">${ar ? 'خلال آخر 5 سنوات' : 'Within the last 5 years'}</option>
+                            <option value="5_10">${ar ? 'منذ 5 إلى 10 سنوات' : '5 to 10 years ago'}</option>
+                            <option value="10plus">${ar ? 'أكثر من 10 سنوات' : 'More than 10 years ago'}</option>
+                            <option value="unknown">${ar ? 'لا أتذكر' : "I don't remember"}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Q9: Previous FIT Test -->
+                <div class="p-4 rounded-2xl bg-ivory/40 border border-beige space-y-2">
+                    <label class="block font-bold text-sm">${ar ? '9. هل سبق أن أجريت اختبار الدم الخفي في البراز (FIT)؟' : '9. Have you ever taken a Fecal Immunochemical Test (FIT)?'}</label>
+                    <select id="crc-fit" onchange="toggleBox('crc-fit-sub', this.value === 'yes')" class="w-full p-3 rounded-xl border border-beige bg-white text-sm">
+                        <option value="">${ar ? '-- اختر --' : '-- Select --'}</option>
+                        <option value="yes">${ar ? 'نعم' : 'Yes'}</option>
+                        <option value="no">${ar ? 'لا' : 'No'}</option>
+                        <option value="unknown">${ar ? 'لا أتذكر' : "I don't remember"}</option>
+                    </select>
+
+                    <!-- Conditional Sub-question for FIT = Yes -->
+                    <div id="crc-fit-sub" class="hidden mt-3 p-3 rounded-xl bg-white border border-beige space-y-2">
+                        <label class="block text-xs font-bold text-deepSage">${ar ? 'ما نتيجة آخر اختبار دم خفي في البراز (FIT)؟' : 'What was the result of your last FIT test?'}</label>
+                        <select id="crc-fit-res" class="w-full p-2.5 rounded-lg border border-beige bg-ivory/50 text-xs">
+                            <option value="negative">${ar ? 'سلبي (Negative)' : 'Negative'}</option>
+                            <option value="positive">${ar ? 'إيجابي (Positive)' : 'Positive'}</option>
+                            <option value="unknown">${ar ? 'لا أتذكر' : "I don't remember"}</option>
+                        </select>
+                    </div>
+                </div>
+            `;
+        }
+
+        function toggleBox(id, show) {
+            const el = document.getElementById(id);
+            if (el) el.classList.toggle('hidden', !show);
+        }
+
+        // ==========================================
+        // CLINICAL EVALUATION ENGINE (3 OUTCOMES)
+        // ==========================================
+        function evaluateEligibility() {
+            const t = I18N[lang];
+            let outcome = 'not_needed'; // 'eligible' | 'custom' | 'not_needed'
+
+            if (cancerType === 'breast') {
+                const gender = document.getElementById('bc-gender').value;
+                const age = document.getElementById('bc-age').value;
+                const fam = document.getElementById('bc-fam').value;
+                const rad = document.getElementById('bc-rad').value;
+                const mammo = document.getElementById('bc-mammo').value;
+                const preg = document.getElementById('bc-preg').value;
+                const implants = document.getElementById('bc-implants').value;
+                const personal = document.getElementById('bc-personal').value;
+                const gene = document.getElementById('bc-gene').value;
+
+                if (!gender || !age || !fam || !rad || !mammo || !personal || !gene) {
+                    alert(lang === 'ar' ? 'يرجى الإجابة على جميع الأسئلة الأساسية أولاً' : 'Please answer all required questions first');
+                    return;
+                }
+
+                // High Risk / Custom Plan Conditions
+                if (
+                    personal === 'yes' || personal === 'unknown' ||
+                    gene === 'yes' || gene === 'unknown' ||
+                    rad === 'yes' || rad === 'unknown' ||
+                    fam === 'yes' || fam === 'unknown' ||
+                    (gender === 'female' && (preg === 'yes' || implants === 'yes'))
+                ) {
+                    outcome = 'custom';
+                } else if (gender === 'male') {
+                    outcome = 'not_needed';
+                } else if (age === '40plus') {
+                    // Average risk >= 40
+                    if (mammo === 'within23') {
+                        outcome = 'not_needed'; // Already screened within 23 months
+                    } else {
+                        outcome = 'eligible';
+                    }
+                } else {
+                    outcome = 'not_needed';
+                }
+
+            } else {
+                // Colorectal Evaluation
+                const gender = document.getElementById('crc-gender').value;
+                const age = document.getElementById('crc-age').value;
+                const fam = document.getElementById('crc-fam').value;
+                const personal = document.getElementById('crc-personal').value;
+                const ibd = document.getElementById('crc-ibd').value;
+                const gene = document.getElementById('crc-gene').value;
+                const rad = document.getElementById('crc-rad').value;
+                const colo = document.getElementById('crc-colo').value;
+                const fit = document.getElementById('crc-fit').value;
+
+                if (!gender || !age || !fam || !personal || !ibd || !gene || !rad || !colo || !fit) {
+                    alert(lang === 'ar' ? 'يرجى الإجابة على جميع الأسئلة الأساسية أولاً' : 'Please answer all required questions first');
+                    return;
+                }
+
+                const fitRes = fit === 'yes' ? document.getElementById('crc-fit-res').value : '';
+                const coloWhen = colo === 'yes' ? document.getElementById('crc-colo-when').value : '';
+
+                // High Risk / Custom Plan Conditions
+                if (
+                    fitRes === 'positive' ||
+                    personal === 'yes' || personal === 'unknown' ||
+                    ibd === 'uc' || ibd === 'crohn' || ibd === 'unknown' ||
+                    gene === 'lynch' || gene === 'fap' || gene === 'unknown' ||
+                    rad === 'yes' || rad === 'unknown' ||
+                    fam === 'yes' || fam === 'unknown' ||
+                    age === '76_85'
+                ) {
+                    outcome = 'custom';
+                } else if (age === '40_75') {
+                    if (colo === 'yes' && (coloWhen === 'within5' || coloWhen === '5_10')) {
+                        outcome = 'not_needed'; // Up to date on colonoscopy
+                    } else {
+                        outcome = 'eligible';
+                    }
+                } else {
+                    outcome = 'not_needed';
+                }
+            }
+
+            renderFinalOutcome(outcome);
+        }
+
+        function renderFinalOutcome(outcome) {
+            const t = I18N[lang];
+            hideAll();
+            document.getElementById('screen-final-result').classList.remove('hidden');
+            document.getElementById('btn-res-home').innerText = t.home;
+
+            const iconEl = document.getElementById('res-icon');
+            const titleEl = document.getElementById('res-title');
+            const descEl = document.getElementById('res-desc');
+            const actionsEl = document.getElementById('res-actions');
+
+            if (outcome === 'eligible') {
+                iconEl.innerText = '✅';
+                titleEl.innerText = t.resEligibleTitle;
+                descEl.innerText = t.resEligibleDesc;
+                actionsEl.innerHTML = `
+                    <button type="button" onclick="openVideoModal()" class="btn-beige w-full py-4 px-5 rounded-2xl font-bold flex items-center justify-center gap-2">
+                        ${t.howScreenBtn}
+                    </button>
+                    <button type="button" onclick="askLocationPermission()" class="btn-primary w-full py-4 px-5 rounded-2xl font-bold flex items-center justify-center gap-2 shadow-sm">
+                        ${t.whereToScreenBtn}
+                    </button>
+                `;
+            } else if (outcome === 'custom') {
+                iconEl.innerText = '📋';
+                titleEl.innerText = t.resCustomTitle;
+                descEl.innerText = t.resCustomDesc;
+                actionsEl.innerHTML = `
+                    <button type="button" onclick="askLocationPermission()" class="btn-primary w-full py-4 px-5 rounded-2xl font-bold flex items-center justify-center gap-2 shadow-sm">
+                        ${t.whereToScreenBtn}
+                    </button>
+                    <button type="button" onclick="openVideoModal()" class="btn-beige w-full py-4 px-5 rounded-2xl font-bold flex items-center justify-center gap-2">
+                        ${t.eduInfoBtn}
+                    </button>
+                `;
+            } else {
+                iconEl.innerText = 'ℹ️';
+                titleEl.innerText = t.resNotNeededTitle;
+                descEl.innerText = t.resNotNeededDesc;
+                actionsEl.innerHTML = `
+                    <button type="button" onclick="openVideoModal()" class="btn-primary w-full py-4 px-5 rounded-2xl font-bold flex items-center justify-center gap-2 shadow-sm">
+                        ${t.eduInfoBtn}
+                    </button>
+                `;
+            }
+        }
+
+        // ==========================================
+        // MODALS: LOCATION, VIDEO, EMERGENCY
+        // ==========================================
+        function askLocationPermission() {
+            document.getElementById('modal-location').classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        function confirmLocationAndMap() {
+            closeModal('modal-location');
+            const searchQuery = lang === 'ar' ? 'مستشفيات ومراكز صحية' : 'Hospitals and Health Centers';
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => {
+                        const lat = pos.coords.latitude;
+                        const lng = pos.coords.longitude;
+                        const url = `https://www.google.com/maps/search/${encodeURIComponent(searchQuery)}/@${lat},${lng},14z`;
+                        window.open(url, '_blank');
+                    },
+                    () => {
+                        const fallbackUrl = `https://www.google.com/maps/search/${encodeURIComponent(searchQuery)}`;
+                        window.open(fallbackUrl, '_blank');
+                    },
+                    { timeout: 8000, enableHighAccuracy: true }
+                );
+            } else {
+                const fallbackUrl = `https://www.google.com/maps/search/${encodeURIComponent(searchQuery)}`;
+                window.open(fallbackUrl, '_blank');
+            }
+        }
+
+        function openVideoModal() {
+            const ar = lang === 'ar';
+            const titleEl = document.getElementById('vid-modal-title');
+            const descEl = document.getElementById('vid-modal-desc');
+            const linkEl = document.getElementById('vid-modal-link');
+            const srcEl = document.getElementById('vid-modal-source');
+
+            if (cancerType === 'breast') {
+                titleEl.innerText = ar ? 'فيديو توعوي: الكشف المبكر عن سرطان الثدي' : 'Educational Video: Breast Cancer Early Detection';
+                descEl.innerText = ar ? 'تعرف على أهمية فحص الماموجرام وكيفية إجرائه للكشف المبكر.' : 'Learn about the importance of Mammography screening and early detection.';
+                linkEl.href = 'https://youtu.be/somcl-bY0fc';
+                linkEl.innerText = ar ? '▶️ مشاهدة فيديو سرطان الثدي على يوتيوب' : '▶️ Watch Breast Cancer Video on YouTube';
+                srcEl.innerText = ar ? 'المصدر: منصة يوتيوب (https://youtu.be/somcl-bY0fc)' : 'Source: YouTube (https://youtu.be/somcl-bY0fc)';
+            } else {
+                titleEl.innerText = ar ? 'فيديو توعوي: الكشف المبكر عن سرطان القولون والمستقيم' : 'Educational Video: Colorectal Cancer Early Detection';
+                descEl.innerText = ar ? 'تعرف على فحص الدم الخفي في البراز (FIT) وأهمية الكشف المبكر.' : 'Learn about the FIT test and early colorectal cancer screening.';
+                linkEl.href = 'https://youtu.be/xfQjbDC7S6s';
+                linkEl.innerText = ar ? '▶️ مشاهدة فيديو سرطان القولون على يوتيوب' : '▶️ Watch Colorectal Cancer Video on YouTube';
+                srcEl.innerText = ar ? 'المصدر: منصة يوتيوب (https://youtu.be/xfQjbDC7S6s)' : 'Source: YouTube (https://youtu.be/xfQjbDC7S6s)';
+            }
+
+            document.getElementById('modal-video').classList.remove('hidden');
+        }
+
+        function openEmergencyModal() {
+            document.getElementById('modal-emergency').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
